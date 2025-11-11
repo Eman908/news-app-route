@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/api/api_manager.dart';
 import 'package:news_app/models/category_model.dart';
+import 'package:news_app/ui/home/widgets/news_bottom_sheet.dart';
 import 'package:news_app/ui/home/widgets/news_card.dart';
 
 class NewsTab extends StatefulWidget {
@@ -67,7 +68,18 @@ class _NewsTabState extends State<NewsTab> {
                         itemCount: articles.length,
                         itemBuilder: (context, index) {
                           final article = articles[index];
-                          return NewsCard(article: article);
+                          return InkWell(
+                            onTap: () {
+                              showModalBottomSheet(
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder:
+                                    (context) =>
+                                        NewsBottomSheet(article: article),
+                              );
+                            },
+                            child: NewsCard(article: article),
+                          );
                         },
                       );
                     } else {

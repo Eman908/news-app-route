@@ -166,6 +166,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View All'**
   String get view;
+
+  /// No description provided for @viewarticle.
+  ///
+  /// In en, this message translates to:
+  /// **'View Full Article'**
+  String get viewarticle;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

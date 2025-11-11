@@ -5,6 +5,7 @@ import 'package:news_app/core/utils/app_theme.dart';
 import 'package:news_app/l10n/generated/i18n/app_localizations.dart';
 import 'package:news_app/providers/theme_and_local_provider.dart';
 import 'package:news_app/ui/home/home_view.dart';
+import 'package:news_app/ui/search/search_view.dart';
 import 'package:news_app/ui/splash/splash_view.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,7 @@ class NewsApp extends StatelessWidget {
             routes: {
               AppRoutes.splashRoute: (context) => const SplashView(),
               AppRoutes.homeRoute: (context) => const HomeView(),
+              AppRoutes.searchRoute: (context) => const SearchView(),
             },
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,

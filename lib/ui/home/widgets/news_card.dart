@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:news_app/core/extensions/context_extension.dart';
@@ -16,11 +17,17 @@ class NewsCard extends StatelessWidget {
         border: Border.all(color: context.colors.secondary),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 16,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
-            child: Image.network(article.urlToImage ?? ''),
+            child: CachedNetworkImage(
+              imageUrl: article.urlToImage ?? '',
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget:
+                  (context, url, error) => const Icon(Icons.broken_image),
+            ),
           ),
           Text(
             article.title ?? '',
@@ -37,7 +44,7 @@ class NewsCard extends StatelessWidget {
               Expanded(
                 child: SizedBox(
                   child: Text(
-                    "By: ${article.author ?? ""}",
+                    "By: ${article.author ?? "Unknown"}",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -46,7 +53,7 @@ class NewsCard extends StatelessWidget {
               SizedBox(
                 child: Text(
                   DateFormat.yMMMEd().add_jm().format(
-                    DateTime.parse(article.publishedAt ?? ""),
+                    DateTime.parse(article.publishedAt ?? "Unknown"),
                   ),
 
                   maxLines: 2,

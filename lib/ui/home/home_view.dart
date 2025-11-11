@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/core/extensions/context_extension.dart';
 import 'package:news_app/core/utils/app_assets.dart';
+import 'package:news_app/core/utils/app_routes.dart';
 import 'package:news_app/providers/category_switch.dart';
 import 'package:news_app/ui/home/tabs/home_tab.dart';
 import 'package:news_app/ui/home/tabs/news_tab.dart';
@@ -30,7 +31,9 @@ class HomeView extends StatelessWidget {
             centerTitle: true,
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, AppRoutes.searchRoute);
+                },
                 icon: const ImageIcon(AssetImage(Assets.assetsImagesSearch)),
               ),
             ],

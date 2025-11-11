@@ -10,5 +10,7 @@
     "arabic": "Arabic",
     "english": "English",
     "morning": "Good Morning\nHere is Some News For You",
-    "view": "View All"
+    "view": "View All",
+    "viewarticle": "View Full Article",
+    "search": "Search"
 }
