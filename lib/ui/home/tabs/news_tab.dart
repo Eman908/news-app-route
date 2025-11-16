@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:news_app/api/api_manager.dart';
 import 'package:news_app/models/category_model.dart';
+import 'package:news_app/models/full_atricles/article.dart';
 import 'package:news_app/ui/home/widgets/news_bottom_sheet.dart';
 import 'package:news_app/ui/home/widgets/news_card.dart';
 
@@ -14,6 +18,56 @@ class NewsTab extends StatefulWidget {
 
 class _NewsTabState extends State<NewsTab> {
   int selected = 0;
+
+  static const int pageSize = 5;
+
+  late PagingController<int, Article> pagingController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    pagingController = PagingController(firstPageKey: 1);
+
+    pagingController.addPageRequestListener((pageKey) {
+      loadArticlesPage(pageKey);
+    });
+  }
+
+  @override
+  void dispose() {
+    pagingController.dispose();
+    super.dispose();
+  }
+
+  Future<void> loadArticlesPage(int page) async {
+    try {
+      final sourceId = sources[selected].id ?? '';
+
+      final data = await ApiManager().getFullArticles(
+        source: sourceId,
+        page: page.toString(),
+        pageSize: pageSize.toString(),
+      );
+
+      final newItems = data?.articles ?? [];
+
+      final isLastPage = newItems.length < pageSize;
+
+      if (isLastPage) {
+        pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = page + 1;
+        pagingController.appendPage(newItems, nextPageKey);
+      }
+    } catch (e) {
+      pagingController.error = e;
+    }
+    log("Loading page: $page");
+  }
+
+  List sources = [];
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -24,17 +78,19 @@ class _NewsTabState extends State<NewsTab> {
         } else if (snapshot.hasError) {
           return const Center(child: Icon(Icons.error));
         } else if (snapshot.hasData) {
-          var sources = snapshot.data?.sources ?? [];
+          sources = snapshot.data?.sources ?? [];
+
           return Column(
             children: [
               DefaultTabController(
-                initialIndex: selected,
-
                 length: sources.length,
                 child: TabBar(
                   onTap: (index) {
-                    selected = index;
-                    setState(() {});
+                    setState(() {
+                      selected = index;
+                    });
+
+                    pagingController.refresh();
                   },
                   labelStyle: const TextStyle(
                     fontSize: 20,
@@ -46,46 +102,50 @@ class _NewsTabState extends State<NewsTab> {
                   padding: EdgeInsets.zero,
                   tabAlignment: TabAlignment.start,
                   isScrollable: true,
-                  tabs: sources.map((e) => Text(e.name ?? '')).toList(),
+                  tabs:
+                      sources
+                          .map(
+                            (e) => Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                e.name ?? '',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
                 ),
               ),
+
               Expanded(
-                child: FutureBuilder(
-                  future: ApiManager().getFullArticles(
-                    source: sources[selected].id ?? '',
+                child: PagedListView<int, Article>.separated(
+                  separatorBuilder: (_, _) => const SizedBox(height: 16),
+                  pagingController: pagingController,
+                  padding: const EdgeInsets.all(16),
+                  builderDelegate: PagedChildBuilderDelegate<Article>(
+                    itemBuilder:
+                        (context, article, index) => InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              builder: (_) => NewsBottomSheet(article: article),
+                            );
+                          },
+                          child: NewsCard(article: article),
+                        ),
+                    firstPageProgressIndicatorBuilder:
+                        (_) => const Center(child: CircularProgressIndicator()),
+                    newPageProgressIndicatorBuilder:
+                        (_) => const Center(child: CircularProgressIndicator()),
+                    noItemsFoundIndicatorBuilder:
+                        (_) => const Center(child: Text("No Articles Found")),
+                    firstPageErrorIndicatorBuilder:
+                        (_) => const Center(child: Icon(Icons.error)),
                   ),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return const Center(child: Icon(Icons.error));
-                    } else if (snapshot.hasData) {
-                      var articles = snapshot.data?.articles ?? [];
-                      return ListView.separated(
-                        padding: const EdgeInsets.all(16),
-                        separatorBuilder:
-                            (context, index) => const SizedBox(height: 16),
-                        itemCount: articles.length,
-                        itemBuilder: (context, index) {
-                          final article = articles[index];
-                          return InkWell(
-                            onTap: () {
-                              showModalBottomSheet(
-                                backgroundColor: Colors.transparent,
-                                context: context,
-                                builder:
-                                    (context) =>
-                                        NewsBottomSheet(article: article),
-                              );
-                            },
-                            child: NewsCard(article: article),
-                          );
-                        },
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
-                  },
                 ),
               ),
             ],

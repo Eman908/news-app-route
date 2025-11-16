@@ -17,6 +17,7 @@ class NewsApp extends StatelessWidget {
     return Consumer<ThemeAndLocalProvider>(
       builder:
           (context, provider, _) => MaterialApp(
+            debugShowCheckedModeBanner: false,
             routes: {
               AppRoutes.splashRoute: (context) => const SplashView(),
               AppRoutes.homeRoute: (context) => const HomeView(),

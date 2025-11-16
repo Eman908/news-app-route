@@ -37,7 +37,11 @@ class SearchView extends StatelessWidget {
                 ),
                 Expanded(
                   child: FutureBuilder(
-                    future: ApiManager().getFullArticles(param: 'param'),
+                    future: ApiManager().getFullArticles(
+                      param: provider.search.isEmpty ? null : provider.search,
+                      page: "1",
+                      pageSize: "20",
+                    ),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());

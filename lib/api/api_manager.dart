@@ -19,8 +19,18 @@ class ApiManager {
     return data;
   }
 
-  Future<FullAtricles?> getFullArticles({String? source, String? param}) async {
-    Uri uri = Uri.https(baseUrl, endPoint2, {"sources": source, "q": param});
+  Future<FullAtricles?> getFullArticles({
+    String? source,
+    String? param,
+    String? page,
+    String? pageSize,
+  }) async {
+    Uri uri = Uri.https(baseUrl, endPoint2, {
+      "sources": source,
+      "q": param,
+      "page": page,
+      "pageSize": pageSize,
+    });
     Response response = await dio.getUri(
       uri,
       options: Options(headers: {"Authorization": apiKey}),
