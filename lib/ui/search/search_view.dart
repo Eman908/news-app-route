@@ -50,23 +50,20 @@ class SearchView extends StatelessWidget {
                       } else if (snapshot.hasData) {
                         var articles = snapshot.data?.articles ?? [];
                         List filtered =
-                            provider.search.isEmpty
-                                ? articles
-                                : articles.where((e) {
-                                  final search = provider.search.toLowerCase();
+                            articles.where((e) {
+                              final search = provider.search.toLowerCase();
 
-                                  final description =
-                                      e.description?.toLowerCase() ?? '';
-                                  final content =
-                                      e.content?.toLowerCase() ?? '';
-                                  final title = e.title?.toLowerCase() ?? '';
-                                  final author = e.author?.toLowerCase() ?? '';
+                              final description =
+                                  e.description?.toLowerCase() ?? '';
+                              final content = e.content?.toLowerCase() ?? '';
+                              final title = e.title?.toLowerCase() ?? '';
+                              final author = e.author?.toLowerCase() ?? '';
 
-                                  return description.contains(search) ||
-                                      content.contains(search) ||
-                                      title.contains(search) ||
-                                      author.contains(search);
-                                }).toList();
+                              return description.contains(search) ||
+                                  content.contains(search) ||
+                                  title.contains(search) ||
+                                  author.contains(search);
+                            }).toList();
 
                         return ListView.separated(
                           separatorBuilder:

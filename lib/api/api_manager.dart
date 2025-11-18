@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:news_app/models/articles/articles.dart';
 import 'package:news_app/models/full_atricles/full_atricles.dart';
 
 class ApiManager {
   final String baseUrl = "newsapi.org";
-  final String apiKey = "f817f730a8b54e85a25d95fe6d036d30";
+  final String apiKey = dotenv.env['APIKEY']!;
   final String endPoint = '/v2/top-headlines/sources';
   final String endPoint2 = '/v2/everything';
   final Dio dio = Dio();
@@ -36,6 +37,7 @@ class ApiManager {
       options: Options(headers: {"Authorization": apiKey}),
     );
     var data = FullAtricles.fromJson(response.data);
+
     return data;
   }
 }
