@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/api/api_manager.dart';
+import 'package:news_app/api/api_client.dart';
+import 'package:news_app/api/dio_provider.dart';
 import 'package:news_app/core/extensions/context_extension.dart';
 import 'package:news_app/core/extensions/padding_extension.dart';
 import 'package:news_app/providers/search_provider.dart';
@@ -37,10 +38,11 @@ class SearchView extends StatelessWidget {
                 ),
                 Expanded(
                   child: FutureBuilder(
-                    future: ApiManager().getFullArticles(
-                      param: provider.search.isEmpty ? null : provider.search,
-                      page: "1",
-                      pageSize: "20",
+                    future: ApiClient(providerDio()).getFullArticles(
+                      null,
+                      provider.search.isEmpty ? null : provider.search,
+                      "1",
+                      "20",
                     ),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {

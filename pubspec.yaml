@@ -39,12 +39,15 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   intl: any
   number_paginator: ^1.1.1
+  pretty_dio_logger: ^1.4.0
   provider: ^6.1.5+1
   retrofit: ^4.6.0
   shared_preferences: ^2.5.3
   url_launcher: ^6.3.2
 
 dev_dependencies:
+  retrofit_generator: ^9.7.0
+  build_runner: ^2.5.4
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter

@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:news_app/api/api_manager.dart';
+import 'package:news_app/api/api_client.dart';
+import 'package:news_app/api/dio_provider.dart';
 import 'package:news_app/models/category_model.dart';
 import 'package:news_app/models/full_atricles/article.dart';
 import 'package:news_app/ui/home/widgets/news_bottom_sheet.dart';
@@ -44,11 +45,9 @@ class _NewsTabState extends State<NewsTab> {
     try {
       final sourceId = sources[selected].id ?? '';
 
-      final data = await ApiManager().getFullArticles(
-        source: sourceId,
-        page: page.toString(),
-        pageSize: pageSize.toString(),
-      );
+      final data = await ApiClient(
+        providerDio(),
+      ).getFullArticles(sourceId, null, page.toString(), pageSize.toString());
 
       final newItems = data?.articles ?? [];
 
@@ -71,7 +70,7 @@ class _NewsTabState extends State<NewsTab> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: ApiManager().getArticles(category: widget.categoryModel.id),
+      future: ApiClient(providerDio()).getArticles(widget.categoryModel.id),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const LinearProgressIndicator();

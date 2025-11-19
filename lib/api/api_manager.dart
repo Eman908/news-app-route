@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:news_app/models/articles/articles.dart';
 import 'package:news_app/models/full_atricles/full_atricles.dart';
 
+@Deprecated('This not supported anymore use ApiClient instead')
 class ApiManager {
   final String baseUrl = "newsapi.org";
   final String apiKey = dotenv.env['APIKEY']!;
