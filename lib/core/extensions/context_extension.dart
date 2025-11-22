@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/l10n/generated/i18n/app_localizations.dart';
-import 'package:news_app/providers/theme_and_local_provider.dart';
+import 'package:news_app/core/providers/theme_and_local_provider.dart';
 import 'package:provider/provider.dart';
 
 extension ContextExtension on BuildContext {

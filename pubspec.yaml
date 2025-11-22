@@ -29,8 +29,11 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cached_network_image: ^3.4.1
+  cloud_firestore: null
+  connectivity_plus: ^7.0.0
   cupertino_icons: ^1.0.8
   dio: ^5.9.0
+  firebase_core: null
   flutter:
     sdk: flutter
   flutter_dotenv: ^6.0.0
@@ -46,11 +49,12 @@ dependencies:
   url_launcher: ^6.3.2
 
 dev_dependencies:
-  retrofit_generator: ^9.7.0
   build_runner: ^2.5.4
   flutter_lints: ^5.0.0
+  # hive_ce_generator:
   flutter_test:
     sdk: flutter
+  retrofit_generator: ^9.7.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

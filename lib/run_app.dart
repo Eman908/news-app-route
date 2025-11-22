@@ -3,10 +3,10 @@ import 'package:news_app/core/extensions/context_extension.dart';
 import 'package:news_app/core/utils/app_routes.dart';
 import 'package:news_app/core/utils/app_theme.dart';
 import 'package:news_app/l10n/generated/i18n/app_localizations.dart';
-import 'package:news_app/providers/theme_and_local_provider.dart';
-import 'package:news_app/ui/home/home_view.dart';
-import 'package:news_app/ui/search/search_view.dart';
-import 'package:news_app/ui/splash/splash_view.dart';
+import 'package:news_app/presentation/features/home/views/home_view.dart';
+import 'package:news_app/presentation/features/search/views/search_view.dart';
+import 'package:news_app/presentation/features/splash/splash_view.dart';
+import 'package:news_app/core/providers/theme_and_local_provider.dart';
 import 'package:provider/provider.dart';
 
 class NewsApp extends StatelessWidget {
